@@ -38,7 +38,8 @@ body{background:var(--bg);color:var(--white);font-family:var(--sans);line-height
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 48px;border-bottom:1px solid var(--border);background:rgba(6,6,6,0.95);backdrop-filter:blur(20px)}
 .nav-logo{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:rgba(244,240,235,0.4);text-decoration:none;text-transform:uppercase;display:flex;align-items:center;gap:10px}
-.nav-logo-mark{font-family:var(--gothic);font-size:18px;color:var(--white);line-height:1}
+.nav-logo-mark{display:flex;align-items:center;justify-content:center;width:22px;height:22px}
+.nav-logo-mark svg{width:16px;height:16px;stroke:var(--white);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .nav-links{display:flex;gap:32px;list-style:none}
 .nav-links a{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;color:var(--gray);text-decoration:none;text-transform:uppercase;transition:color 0.2s}
 .nav-links a:hover{color:var(--white)}
@@ -227,7 +228,12 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <span class="nav-logo-mark">PF</span>
+    <span class="nav-logo-mark">
+  <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <line x1="8" y1="14" x2="8" y2="2"/>
+    <polyline points="3,7 8,2 13,7"/>
+  </svg>
+</span>
     <span>Passed Forward</span>
   </a>
   <ul class="nav-links">
@@ -243,7 +249,12 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
   <div class="hero-radial"></div>
 
   <div class="hero-eyebrow">
-    <span class="hero-eyebrow-line"></span>
+    <span class="hero-eyebrow-line">
+  <svg viewBox="0 0 32 10" width="32" height="10" xmlns="http://www.w3.org/2000/svg" style="display:block">
+    <polyline points="0,9 16,1 32,9" fill="none" stroke="url(#hg)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#c8b4f0"/><stop offset="100%" stop-color="#90e4c8"/></linearGradient></defs>
+  </svg>
+</span>
     Higher &times; FarCon Rome 2026
   </div>
 
