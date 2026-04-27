@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="catra.fyi — onchain generalist. commerce × design × tech culture. Higher on farcaster.">
+<meta property="og:title" content="catra.fyi">
+<meta property="og:description" content="onchain generalist. commerce × design × tech culture.">
+<meta property="og:url" content="https://catra.fyi">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@catradarusman">
+<title>catra.fyi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#070706;
+  --fg:rgba(232,228,218,0.88);
+  --muted:rgba(232,228,218,0.2);
+  --dim:rgba(232,228,218,0.055);
+  --accent:#1d9e75;
+  --accent-low:rgba(29,158,117,0.08);
+  --mono:'DM Mono',monospace;
+  --sans:'Space Grotesk',sans-serif;
+}
+
+html,body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:999;
+}
+
+/* LAYOUT */
+.wrap{
+  max-width:580px;
+  margin:0 auto;
+  padding:0 24px;
+  width:100%;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+/* NAV */
+nav{
+  padding:22px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:0.5px solid var(--dim);
+}
+.logo{font-size:11px;letter-spacing:0.12em;color:var(--muted);}
+.logo b{color:var(--accent);font-weight:400;}
+.nav-tag{font-size:9px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;}
+
+/* HERO */
+.hero{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:36px 0 28px;
+  border-bottom:0.5px solid var(--dim);
+  overflow:hidden;
+  min-height:280px;
+}
+.hero-img{
+  width:clamp(180px,50vw,280px);
+  height:clamp(180px,50vw,280px);
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  filter:contrast(1.04) brightness(0.9);
+}
+.hero-label{
+  position:absolute;
+  bottom:18px;left:0;
+  font-size:9px;letter-spacing:0.18em;
+  color:rgba(232,228,218,0.15);
+  text-transform:uppercase;
+}
+
+/* BIO */
+.bio-bar{
+  padding:18px 0;
+  border-bottom:0.5px solid var(--dim);
+}
+.bio-text{
+  font-size:11px;color:var(--muted);line-height:1.9;
+}
+.bio-text .hi{color:rgba(232,228,218,0.55);}
+
+/* CLUSTERS */
+.clusters{display:flex;flex-direction:column;}
+.cluster{border-bottom:0.5px solid var(--dim);}
+
+.cluster-hd{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px 0;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.cluster-hd:hover .cluster-lbl{color:rgba(232,228,218,0.5);}
+.cluster-lbl{
+  font-size:9px;letter-spacing:0.18em;
+  color:var(--muted);text-transform:uppercase;
+  transition:color 0.18s;
+}
+.cluster-ico{
+  font-size:13px;color:var(--muted);
+  transition:transform 0.2s ease;
+  line-height:1;
+  padding:4px;
+}
+.cluster.open .cluster-ico{transform:rotate(45deg);}
+
+.cluster-body{
+  display:none;
+  flex-direction:column;
+  padding-bottom:4px;
+}
+.cluster.open .cluster-body{display:flex;}
+
+/* ITEMS */
+.item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:11px 0 11px 12px;
+  border-top:0.5px solid var(--dim);
+  text-decoration:none;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+}
+.item::before{
+  content:'';
+  position:absolute;
+  left:-100%;top:0;
+  width:100%;height:100%;
+  background:var(--accent-low);
+  transition:left 0.22s ease;
+}
+.item:hover::before{left:0;}
+.item:active::before{left:0;background:rgba(29,158,117,0.14);}
+.item:hover .iname{color:var(--fg);}
+.item:hover .iarr{opacity:1;transform:translateX(0);}
+
+.il{
+  display:flex;align-items:center;gap:12px;
+  position:relative;z-index:1;min-width:0;
+}
+.ir{
+  display:flex;align-items:center;gap:8px;
+  position:relative;z-index:1;
+  flex-shrink:0;margin-left:8px;
+}
+
+.s{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
+.s-live{background:var(--accent);}
+.s-build{background:transparent;border:0.75px solid rgba(232,228,218,0.2);}
+.s-dim{background:rgba(232,228,218,0.14);}
+
+.iname{
+  font-size:12px;color:rgba(232,228,218,0.58);
+  letter-spacing:0.02em;transition:color 0.15s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.isub{
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.06em;text-transform:uppercase;
+  white-space:nowrap;
+}
+.iarr{
+  font-size:10px;color:var(--muted);
+  opacity:0;transform:translateX(-4px);
+  transition:all 0.15s;
+}
+
+/* FOOTER BLOCKS */
+.foot-blocks{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-top:0.5px solid var(--dim);
+}
+.fb{padding:22px 0;}
+.fb:first-child{border-right:0.5px solid var(--dim);padding-right:20px;}
+.fb:last-child{padding-left:20px;}
+.fb-lbl{
+  font-size:9px;letter-spacing:0.16em;
+  color:var(--muted);text-transform:uppercase;
+  margin-bottom:8px;
+}
+.fb-text{font-size:11px;color:rgba(232,228,218,0.28);line-height:1.9;}
+.fb-text .e{color:rgba(232,228,218,0.62);}
+
+/* FOOTER */
+footer{
+  padding:18px 0;
+  border-top:0.5px solid var(--dim);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.foot-l{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.foot-r{display:flex;gap:16px;}
+.flink{
+  font-size:9px;color:var(--muted);
+  letter-spacing:0.08em;
+  text-decoration:none;
+  cursor:pointer;
+  transition:color 0.15s;
+  text-transform:uppercase;
+  padding:4px 0;
+}
+.flink:hover{color:var(--accent);}
+
+/* ── RESPONSIVE ── */
+
+/* Mobile ≤ 480px */
+@media(max-width:480px){
+  .wrap{padding:0 16px;}
+  nav{padding:18px 0;}
+  .logo{font-size:10px;}
+  .hero{min-height:220px;padding:28px 0 24px;}
+  .hero-img{
+    width:clamp(160px,65vw,240px);
+    height:clamp(160px,65vw,240px);
+  }
+  .hero-label{font-size:8px;bottom:12px;}
+  .bio-text{font-size:10.5px;}
+  .cluster-hd{padding:12px 0;}
+  .isub{display:none;}
+  .iarr{opacity:1;transform:translateX(0);}
+  .foot-blocks{grid-template-columns:1fr;}
+  .fb{padding:16px 0;}
+  .fb:first-child{
+    border-right:none;
+    border-bottom:0.5px solid var(--dim);
+    padding-right:0;
+  }
+  .fb:last-child{padding-left:0;}
+  footer{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    padding:16px 0;
+  }
+  .foot-r{gap:14px;}
+}
+
+/* Tablet 481–768px */
+@media(min-width:481px) and (max-width:768px){
+  .wrap{padding:0 20px;}
+  .hero{min-height:260px;}
+  .hero-img{
+    width:clamp(200px,45vw,280px);
+    height:clamp(200px,45vw,280px);
+  }
+}
+
+/* Laptop / Desktop ≥ 769px */
+@media(min-width:769px){
+  .wrap{padding:0 24px;}
+  .hero{min-height:300px;}
+  .hero-img{width:280px;height:280px;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <nav>
+    <div class="logo">catra<b>.fyi</b></div>
+    <div class="nav-tag">Jakarta · Onchain</div>
+  </nav>
+
+  <section class="hero">
+    <!-- Place normalcy_is_commodity.png in the same folder as this file -->
+    <img
+      class="hero-img"
+      src="normalcy_is_commodity.png"
+      alt="normalcy is a commodity"
+    >
+    <div class="hero-label">normalcy is a commodity</div>
+  </section>
+
+  <div class="bio-bar">
+    <p class="bio-text">
+      onchain generalist. <span class="hi">commerce × design × tech culture.</span><br>
+      <span class="hi">Higher</span> on farcaster. softball on weekends. music on the side.
+    </p>
+  </div>
+
+  <div class="clusters">
+
+    <!-- HIGHER -->
+    <div class="cluster open" id="c0">
+      <div class="cluster-hd" onclick="tog('c0')">
+        <span class="cluster-lbl">Higher</span>
+        <span class="cluster-ico">+</span>
+      </div>
+      <div class="cluster-body">
+        <a class="item" href="https://farcaster.xyz/~/channel/higher-athletics/" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Higher Athletics</div></div>
+          <div class="ir"><span class="isub">onchain fitness · base</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://farcaster.xyz/~/channel/higherfm/" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Higher FM</div></div>
+          <div class="ir"><span class="isub">radio · community</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://github.com/catradarusman/higher-network-skill" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Higher Network Skill</div></div>
+          <div class="ir"><span class="isub">ai skill · open source</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://highlight.xyz/user/@catra.eth" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-dim"></div><div class="iname">HB</div></div>
+          <div class="ir"><span class="isub">nft collectible</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://catra.fyi/passed-upward" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Passed Upward</div></div>
+          <div class="ir"><span class="isub">higher × farcon rome 2026</span><span class="iarr">↗</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="cluster" id="c1">
+      <div class="cluster-hd" onclick="tog('c1')">
+        <span class="cluster-lbl">Tools</span>
+        <span class="cluster-ico">+</span>
+      </div>
+      <div class="cluster-body">
+        <a class="item" href="https://press-tool.netlify.app/" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">PRESS</div></div>
+          <div class="ir"><span class="isub">tweet tool · miniapp</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://collider-tool.netlify.app/" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Collider</div></div>
+          <div class="ir"><span class="isub">ai tool · farcaster</span><span class="iarr">↗</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- SOVEREIGNTY -->
+    <div class="cluster" id="c2">
+      <div class="cluster-hd" onclick="tog('c2')">
+        <span class="cluster-lbl">Sovereignty</span>
+        <span class="cluster-ico">+</span>
+      </div>
+      <div class="cluster-body">
+        <a class="item" href="https://rentless.wtf/" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-build"></div><div class="iname">RENTLESS</div></div>
+          <div class="ir"><span class="isub">creator consulting</span><span class="iarr">↗</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- COMMUNITY -->
+    <div class="cluster" id="c3">
+      <div class="cluster-hd" onclick="tog('c3')">
+        <span class="cluster-lbl">Community</span>
+        <span class="cluster-ico">+</span>
+      </div>
+      <div class="cluster-body">
+        <div class="item">
+          <div class="il"><div class="s s-live"></div><div class="iname">Dago DAO</div></div>
+          <div class="ir"><span class="isub">onchain community</span><span class="iarr">↗</span></div>
+        </div>
+        <a class="item" href="https://captawon.club/rekomendesu" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Cap Tawon JKT</div></div>
+          <div class="ir"><span class="isub">softball · jakarta</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://captawon.club/rekomendesu" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Rekomendesu</div></div>
+          <div class="ir"><span class="isub">rekomendasi · lokal</span><span class="iarr">↗</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ART & MUSIC -->
+    <div class="cluster" id="c4">
+      <div class="cluster-hd" onclick="tog('c4')">
+        <span class="cluster-lbl">Art & Music</span>
+        <span class="cluster-ico">+</span>
+      </div>
+      <div class="cluster-body">
+        <a class="item" href="https://highlight.xyz/mint/base:0x4428bE530724B5ee47E4Cb0061f77024933a4dc3" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-dim"></div><div class="iname">Sleeves</div></div>
+          <div class="ir"><span class="isub">art project · base</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://zora.co/@catra" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-dim"></div><div class="iname">Zora</div></div>
+          <div class="ir"><span class="isub">collected works · onchain</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="https://www.instagram.com/reaksiasam" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-dim"></div><div class="iname">ASAM</div></div>
+          <div class="ir"><span class="isub">production · DJ</span><span class="iarr">↗</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- WRITING -->
+    <div class="cluster" id="c5">
+      <div class="cluster-hd" onclick="tog('c5')">
+        <span class="cluster-lbl">Writing</span>
+        <span class="cluster-ico">+</span>
+      </div>
+      <div class="cluster-body">
+        <a class="item" href="https://paragraph.com/@catra" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-live"></div><div class="iname">Paragraph</div></div>
+          <div class="ir"><span class="isub">essays · publication</span><span class="iarr">↗</span></div>
+        </a>
+        <a class="item" href="#" target="_blank" rel="noopener">
+          <div class="il"><div class="s s-dim"></div><div class="iname">catra.md</div></div>
+          <div class="ir"><span class="isub">voice · 3833 tweets</span><span class="iarr">↗</span></div>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /clusters -->
+
+  <div class="foot-blocks">
+    <div class="fb">
+      <div class="fb-lbl">now</div>
+      <div class="fb-text">
+        full-time <span class="e">web3.</span><br>
+        building inside <span class="e">Higher.</span><br>
+        open to the right collab.
+      </div>
+    </div>
+    <div class="fb">
+      <div class="fb-lbl">always</div>
+      <div class="fb-text">
+        ownership over audience.<br>
+        sovereignty over scale.<br>
+        <span class="e">slow pitch</span> on weekends.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l">always higher.</div>
+    <div class="foot-r">
+      <a class="flink" href="https://farcaster.xyz/catra.eth" target="_blank" rel="noopener">farcaster</a>
+      <a class="flink" href="https://x.com/catradarusman" target="_blank" rel="noopener">x</a>
+      <a class="flink" href="mailto:catradarusman@pm.me">email</a>
+    </div>
+  </footer>
+
+</div><!-- /wrap -->
+
+<script>
+function tog(id){
+  document.getElementById(id).classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
